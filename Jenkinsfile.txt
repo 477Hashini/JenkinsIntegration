@@ -1,50 +1,76 @@
 pipeline {
     agent any
 
-    environment {
-        DIRECTORY_PATH = "path/to/code/directory"
-        TESTING_ENVIRONMENT = "test-environment"
-        PRODUCTION_ENVIRONMENT = "your-name-production"
-    }
-
     stages {
         stage('Build') {
             steps {
-                echo "Fetching source code from ${env.DIRECTORY_PATH}"
-                echo "Compiling the code and generating artifacts"
+                // Use a build automation tool like Maven
+                sh 'mvn clean package'
             }
         }
 
-        stage('Test') {
+        stage('Unit and Integration Tests') {
             steps {
-                echo "Running unit tests"
-                echo "Running integration tests"
+                // Use test automation tools for unit and integration tests
+                sh 'run-unit-tests.sh'
+                sh 'run-integration-tests.sh'
             }
         }
 
-        stage('Code Quality Check') {
+        stage('Code Analysis') {
             steps {
-                echo "Checking the quality of the code"
+                // Integrate a code analysis tool (e.g., SonarQube) to analyze code
+                sh 'sonar-scanner'
             }
         }
 
-        stage('Deploy') {
+        stage('Security Scan') {
             steps {
-                echo "Deploying the application to ${env.TESTING_ENVIRONMENT}"
+                // Use a security scanning tool (e.g., OWASP ZAP) to identify vulnerabilities
+                sh 'owasp-zap-scan'
             }
         }
 
-        stage('Approval') {
+        stage('Deploy to Staging') {
             steps {
-                echo "Waiting for manual approval..."
-                sleep(time: 10, unit: 'SECONDS')
+                // Deploy the application to a staging server (e.g., AWS EC2 instance)
+                sh 'deploy-to-staging.sh'
+            }
+        }
+
+        stage('Integration Tests on Staging') {
+            steps {
+                // Run integration tests on the staging environment
+                sh 'run-integration-tests-on-staging.sh'
             }
         }
 
         stage('Deploy to Production') {
             steps {
-                echo "Deploying the code to ${env.PRODUCTION_ENVIRONMENT}"
+                // Deploy the application to a production server (e.g., AWS EC2 instance)
+                sh 'deploy-to-production.sh'
             }
+        }
+    }
+
+    post {
+        success {
+            // Send success notification email with log attachment
+            emailext (
+                subject: "Pipeline Status: SUCCESS",
+                body: "The pipeline has completed successfully.",
+                attachLog: true,
+                to: "hashini.amarasena@gmail.com"
+            )
+        }
+        failure {
+            // Send failure notification email with log attachment
+            emailext (
+                subject: "Pipeline Status: FAILURE",
+                body: "The pipeline has failed. Please check the logs for details.",
+                attachLog: true,
+                to: "hashini.amarasena@gmail.com"
+            )
         }
     }
 }
