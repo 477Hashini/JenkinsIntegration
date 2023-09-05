@@ -1,76 +1,85 @@
 pipeline {
     agent any
-
+    
     stages {
+        stage('Checkout') {
+            steps {
+                // Checkout your source code from the GitHub repository
+                checkout scm
+            }
+        }
+        
         stage('Build') {
             steps {
-                // Use a build automation tool like Maven
+                // Build your code using a build automation tool (e.g., Maven)
                 sh 'mvn clean package'
             }
         }
-
+        
         stage('Unit and Integration Tests') {
             steps {
-                // Use test automation tools for unit and integration tests
-                sh 'run-unit-tests.sh'
-                sh 'run-integration-tests.sh'
+                // Run unit tests and integration tests
+                // Replace these commands with your actual test commands
+                sh 'run_unit_tests_command'
+                sh 'run_integration_tests_command'
             }
         }
-
+        
         stage('Code Analysis') {
             steps {
-                // Integrate a code analysis tool (e.g., SonarQube) to analyze code
-                sh 'sonar-scanner'
+                // Integrate a code analysis tool (e.g., SonarQube) and analyze your code
+                // Replace these commands with your actual code analysis tool commands
+                sh 'code_analysis_command'
             }
         }
-
+        
         stage('Security Scan') {
             steps {
-                // Use a security scanning tool (e.g., OWASP ZAP) to identify vulnerabilities
-                sh 'owasp-zap-scan'
+                // Perform a security scan using a security analysis tool (e.g., OWASP ZAP)
+                // Replace these commands with your actual security scanning tool commands
+                sh 'security_scan_command'
             }
         }
-
+        
         stage('Deploy to Staging') {
             steps {
-                // Deploy the application to a staging server (e.g., AWS EC2 instance)
-                sh 'deploy-to-staging.sh'
+                // Deploy your application to a staging server (e.g., AWS EC2 instance)
+                // Replace these commands with your actual deployment commands
+                sh 'deploy_to_staging_command'
             }
         }
-
+        
         stage('Integration Tests on Staging') {
             steps {
                 // Run integration tests on the staging environment
-                sh 'run-integration-tests-on-staging.sh'
+                // Replace these commands with your actual integration tests commands
+                sh 'run_integration_tests_on_staging_command'
             }
         }
-
+        
         stage('Deploy to Production') {
             steps {
-                // Deploy the application to a production server (e.g., AWS EC2 instance)
-                sh 'deploy-to-production.sh'
+                // Deploy your application to a production server (e.g., AWS EC2 instance)
+                // Replace these commands with your actual production deployment commands
+                sh 'deploy_to_production_command'
             }
         }
     }
-
+    
     post {
-        success {
-            // Send success notification email with log attachment
-            emailext (
-                subject: "Pipeline Status: SUCCESS",
-                body: "The pipeline has completed successfully.",
-                attachLog: true,
-                to: "hashini.amarasena@gmail.com"
-            )
-        }
         failure {
-            // Send failure notification email with log attachment
-            emailext (
-                subject: "Pipeline Status: FAILURE",
-                body: "The pipeline has failed. Please check the logs for details.",
+            // Send a failure notification email with logs as attachments
+            emailext subject: 'Pipeline Failed',
+                body: 'The Jenkins pipeline has failed. Please check the logs for details.',
                 attachLog: true,
-                to: "hashini.amarasena@gmail.com"
-            )
+                to: 'your_email@example.com'
+        }
+        success {
+            // Send a success notification email with logs as attachments
+            emailext subject: 'Pipeline Succeeded',
+                body: 'The Jenkins pipeline has succeeded.',
+                attachLog: true,
+                to: 'your_email@example.com'
         }
     }
 }
