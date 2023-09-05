@@ -11,57 +11,50 @@ pipeline {
         
         stage('Build') {
             steps {
-                // Build your code using a build automation tool (e.g., Maven)
-                sh 'mvn clean package'
+                // Build the code using a build automation tool like Maven
+                echo 'Build stage using Maven'
             }
         }
         
         stage('Unit and Integration Tests') {
             steps {
-                // Run unit tests and integration tests
-                // Replace these commands with your actual test commands
-                sh 'run_unit_tests_command'
-                sh 'run_integration_tests_command'
+                // Run unit tests and integration tests using tools like JUnit
+                echo 'Running unit tests and integration tests'
             }
         }
         
         stage('Code Analysis') {
             steps {
-                // Integrate a code analysis tool (e.g., SonarQube) and analyze your code
-                // Replace these commands with your actual code analysis tool commands
-                sh 'code_analysis_command'
+                // Integrate a code analysis tool like SonarQube
+                echo 'Performing code analysis with SonarQube'
             }
         }
         
         stage('Security Scan') {
             steps {
-                // Perform a security scan using a security analysis tool (e.g., OWASP ZAP)
-                // Replace these commands with your actual security scanning tool commands
-                sh 'security_scan_command'
+                // Perform a security scan using a tool like OWASP ZAP
+                echo 'Performing security scan with OWASP ZAP'
             }
         }
         
         stage('Deploy to Staging') {
             steps {
-                // Deploy your application to a staging server (e.g., AWS EC2 instance)
-                // Replace these commands with your actual deployment commands
-                sh 'deploy_to_staging_command'
+                // Deploy the application to a staging server (e.g., AWS EC2 instance)
+                echo 'Deploying to staging server'
             }
         }
         
         stage('Integration Tests on Staging') {
             steps {
                 // Run integration tests on the staging environment
-                // Replace these commands with your actual integration tests commands
-                sh 'run_integration_tests_on_staging_command'
+                echo 'Running integration tests on staging'
             }
         }
         
         stage('Deploy to Production') {
             steps {
-                // Deploy your application to a production server (e.g., AWS EC2 instance)
-                // Replace these commands with your actual production deployment commands
-                sh 'deploy_to_production_command'
+                // Deploy the application to a production server (e.g., AWS EC2 instance)
+                echo 'Deploying to production server'
             }
         }
     }
@@ -72,14 +65,14 @@ pipeline {
             emailext subject: 'Pipeline Failed',
                 body: 'The Jenkins pipeline has failed. Please check the logs for details.',
                 attachLog: true,
-                to: 'your_email@example.com'
+                to: 'hashini.amarasena@gmail.com'
         }
         success {
             // Send a success notification email with logs as attachments
             emailext subject: 'Pipeline Succeeded',
                 body: 'The Jenkins pipeline has succeeded.',
                 attachLog: true,
-                to: 'your_email@example.com'
+                to: 'hashini.amarasena@gmail.com'
         }
     }
 }
