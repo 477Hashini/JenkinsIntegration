@@ -4,7 +4,7 @@ pipeline{
     stages{
         stage('Build'){
             steps{
-                echo "Code fetched from https://github.com/Dhanuja-Kavindra/SIT_753_Task6.2C.git"
+                echo "Code fetched from https://github.com/477Hashini/JenkinsIntegration.git"
                 echo "Bulding started using Maven"
                 echo "Build finished"
             }
