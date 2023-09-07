@@ -40,7 +40,7 @@ pipeline{
 
         stage('Code Analysis'){
             steps{
-                echo "Code analysis started with Checkmarx"
+                echo "Code analysis started with SonarQube"
                 echo "Code analysis finished"
             }
         }
