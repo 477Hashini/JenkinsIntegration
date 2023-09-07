@@ -20,7 +20,7 @@ pipeline{
             post {
                 failure {
                     emailext(
-                        to: 'spdanuja@gmail.com',
+                        to: 'hashini.amarasena@gmail',
                         subject: "Unit and Integration Test Failed",
                         body: 'Unit and Integration Test failed. Check the attached logs for details.',
                         attachLog: true 
@@ -28,7 +28,7 @@ pipeline{
                 }
                 success {
                     emailext(
-                        to: 'spdanuja@gmail.com',
+                        to: 'hashini.amarasena@gmail.com',
                         subject: 'Unit and Integration Test Succeeded',
                         body: 'Unit and Integration Test succeeded. Check the attached logs for details.',
                         attachLog: true     
@@ -53,7 +53,7 @@ pipeline{
             post {
                 failure {
                     emailext(
-                        to: 'spdanuja@gmail.com',
+                        to: '',
                         subject: 'Security Scan Failed',
                         body: 'Security Scan failed. Check the attached logs for details.',
                         attachLog: true  
@@ -61,7 +61,7 @@ pipeline{
                 }
                 success {
                     emailext(
-                        to: 'spdanuja@gmail.com',
+                        to: 'hashini.amarasena@gmail.com',
                         subject: 'Security Scan Succeeded',
                         body: 'Security Scan succeeded. Check the attached logs for details.',
                         attachLog: true 
