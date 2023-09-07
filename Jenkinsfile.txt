@@ -1,78 +1,94 @@
-pipeline {
+pipeline{
     agent any
-    
-    stages {
-        stage('Checkout') {
-            steps {
-                // Checkout your source code from the GitHub repository
-                checkout scm
+   
+    stages{
+        stage('Build'){
+            steps{
+                echo "Code fetched from https://github.com/Dhanuja-Kavindra/SIT_753_Task6.2C.git"
+                echo "Bulding started using Maven"
+                echo "Build finished"
             }
         }
-        
-        stage('Build') {
-            steps {
-                // Build the code using a build automation tool like Maven
-                echo 'Build stage using Maven'
+
+        stage('Unit and Integration Tests'){
+            steps{
+                echo "Unit tests stareted with NUint"
+                echo "Unit tests finished."
+                echo "Intergration tests started with Selenium"
+                echo "Intergration tests finished."
+            }
+            post {
+                failure {
+                    emailext(
+                        to: 'spdanuja@gmail.com',
+                        subject: "Unit and Integration Test Failed",
+                        body: 'Unit and Integration Test failed. Check the attached logs for details.',
+                        attachLog: true 
+                    )      
+                }
+                success {
+                    emailext(
+                        to: 'spdanuja@gmail.com',
+                        subject: 'Unit and Integration Test Succeeded',
+                        body: 'Unit and Integration Test succeeded. Check the attached logs for details.',
+                        attachLog: true     
+                    ) 
+                }
+            }
+
+        }
+
+        stage('Code Analysis'){
+            steps{
+                echo "Code analysis started with Checkmarx"
+                echo "Code analysis finished"
             }
         }
-        
-        stage('Unit and Integration Tests') {
-            steps {
-                // Run unit tests and integration tests using tools like JUnit
-                echo 'Running unit tests and integration tests'
+
+        stage('Security Scan'){
+            steps{
+                echo "Security scans started with 42Crunch"
+                echo "Security scans finsihed"
+            }
+            post {
+                failure {
+                    emailext(
+                        to: 'spdanuja@gmail.com',
+                        subject: 'Security Scan Failed',
+                        body: 'Security Scan failed. Check the attached logs for details.',
+                        attachLog: true  
+                    ) 
+                }
+                success {
+                    emailext(
+                        to: 'spdanuja@gmail.com',
+                        subject: 'Security Scan Succeeded',
+                        body: 'Security Scan succeeded. Check the attached logs for details.',
+                        attachLog: true 
+                    )   
+                }
             }
         }
-        
-        stage('Code Analysis') {
-            steps {
-                // Integrate a code analysis tool like SonarQube
-                echo 'Performing code analysis with SonarQube'
+
+        stage('Deploy to Staging'){
+            steps{
+                echo "Stagging deployment started"
+                echo "Deployed to AWS EC2 instance-id: i-1234567890abcdef0 staging server"
             }
         }
-        
-        stage('Security Scan') {
-            steps {
-                // Perform a security scan using a tool like OWASP ZAP
-                echo 'Performing security scan with OWASP ZAP'
+
+        stage('Integration Tests on Staging'){
+            steps{
+                echo "Intergration tests started with Selenium"
+                echo "Intergration tests finished."
             }
         }
-        
-        stage('Deploy to Staging') {
-            steps {
-                // Deploy the application to a staging server (e.g., AWS EC2 instance)
-                echo 'Deploying to staging server'
-            }
-        }
-        
-        stage('Integration Tests on Staging') {
-            steps {
-                // Run integration tests on the staging environment
-                echo 'Running integration tests on staging'
-            }
-        }
-        
+
         stage('Deploy to Production') {
             steps {
-                // Deploy the application to a production server (e.g., AWS EC2 instance)
-                echo 'Deploying to production server'
+                echo "Stagging deployment started"
+                echo "Deployed to AWS EC2 instance-id: i-8884567890abcdef0 staging server"
             }
-        }
-    }
-    
-    post {
-        failure {
-            // Send a failure notification email with logs as attachments
-            emailext subject: 'Pipeline Failed',
-                body: 'The Jenkins pipeline has failed. Please check the logs for details.',
-                attachLog: true,
-                to: 'hashini.amarasena@gmail.com'
-        }
-        success {
-            // Send a success notification email with logs as attachments
-            emailext subject: 'Pipeline Succeeded',
-                body: 'The Jenkins pipeline has succeeded.',
-                attachLog: true,
-                to: 'hashini.amarasena@gmail.com'
         }
     }
 }
